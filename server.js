@@ -41,19 +41,17 @@ app.get('/api/portfolio', async (req, res) => {
     }
 });
 
-// Rute API untuk menyimpan/memperbarui data portofolio
 app.post('/api/portfolio', async (req, res) => {
     try {
-        // "upsert: true" akan membuat data baru jika belum ada, atau memperbarui jika sudah ada
-        const updatedData = await Portfolio.findOneAndUpdate({}, req.body, { new: true, upsert: true });
-        res.json(updatedData);
+        await Portfolio.findOneAndUpdate({}, req.body, { new: true, upsert: true });
+
+        res.status(200).json({ success: true, message: 'Data berhasil disimpan' });
+
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 
-// Rute API untuk proses login
-// Di dalam file server.js
 
 app.post('/api/login', (req, res) => {
     console.log("Menerima permintaan login dengan data:", req.body); // <-- TAMBAHKAN BARIS INI
