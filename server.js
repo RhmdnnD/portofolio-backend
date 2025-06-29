@@ -53,10 +53,18 @@ app.post('/api/portfolio', async (req, res) => {
 });
 
 // Rute API untuk proses login
+// Di dalam file server.js
+
 app.post('/api/login', (req, res) => {
+    console.log("Menerima permintaan login dengan data:", req.body); // <-- TAMBAHKAN BARIS INI
+
     const { username, password } = req.body;
-    // Ganti dengan username dan password yang lebih aman sesuai keinginan Anda
-    if (username === 'admin' && password === 'password123') {
+
+    // Ganti kredensial ini jika Anda mau, tapi pastikan sama persis
+    const adminUser = 'admin';
+    const adminPass = 'password123';
+
+    if (username === adminUser && password === adminPass) {
         res.json({ success: true });
     } else {
         res.status(401).json({ success: false, message: 'Username atau password salah' });
