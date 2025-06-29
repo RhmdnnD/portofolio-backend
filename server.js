@@ -42,13 +42,20 @@ app.get('/api/portfolio', async (req, res) => {
 });
 
 app.post('/api/portfolio', async (req, res) => {
+    // Log #1: Konfirmasi bahwa rute ini dipanggil dan data diterima
+    console.log("MENCOBA MENYIMPAN DATA: Data yang diterima ->", JSON.stringify(req.body));
+
     try {
         await Portfolio.findOneAndUpdate({}, req.body, { new: true, upsert: true });
+
+        console.log("SUKSES: Data berhasil ditulis ke database.");
 
         res.status(200).json({ success: true, message: 'Data berhasil disimpan' });
 
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        console.error("GAGAL MENYIMPAN KE DB! Error spesifik ->", error);
+
+        res.status(500).json({ success: false, message: 'Internal server error.' });
     }
 });
 
