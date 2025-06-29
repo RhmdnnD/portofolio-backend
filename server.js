@@ -59,7 +59,6 @@ app.post('/api/portfolio', async (req, res) => {
     }
 });
 
-
 app.post('/api/login', (req, res) => {
     console.log("Menerima permintaan login dengan data:", req.body); // <-- TAMBAHKAN BARIS INI
 
@@ -73,6 +72,26 @@ app.post('/api/login', (req, res) => {
         res.json({ success: true });
     } else {
         res.status(401).json({ success: false, message: 'Username atau password salah' });
+    }
+});
+
+app.get('/api/articles/:id', async (req, res) => {
+    try {
+        const portfolio = await Portfolio.findOne();
+        if (!portfolio) {
+            return res.status(404).json({ message: 'Data portofolio tidak ditemukan.' });
+        }
+
+        // Cari artikel di dalam array berdasarkan ID
+        const article = portfolio.articles.find(a => a.id == req.params.id);
+
+        if (article) {
+            res.json(article);
+        } else {
+            res.status(404).json({ message: 'Artikel tidak ditemukan.' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 });
 
